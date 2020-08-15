@@ -1,7 +1,7 @@
-import axios from "axios";
+import originAxios from "axios";
 
-export function request(config) {
-  const instance = axios.create({
+export function axios(config) {
+  const instance = originAxios.create({
     baseURL: "http://152.136.185.210:8000/api/z8",
     timeout: 5000,
   });
