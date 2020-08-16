@@ -140,7 +140,7 @@ export default {
 
   .tab-control {
     position: sticky;
-    top: 44px;
+    top: 43px;
     z-index: 1;
   }
 </style>
