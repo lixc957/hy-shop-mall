@@ -1,7 +1,9 @@
 <template>
   <div id="home">
     <nav-bar class="nav-bar"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll" 
+      :probe-type="3"
+      @scroll="contentScroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
@@ -11,6 +13,7 @@
         @tabClick="tabClick"/>
       <good-list :goods="showGoods"/>
     </scroll>
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -24,6 +27,7 @@ import NavBar from 'common/navbar/NavBar'
 import Scroll from 'common/scroll/Scroll'
 import TabControl from 'content/TabControl'
 import GoodList from 'content/goods/GoodsList'
+import BackTop from 'content/BackTop'
 
 import {getHomeMultidata,getHomeGoods} from 'network/home'
 
@@ -37,7 +41,8 @@ export default {
         new: {page: 0,list: []},
         sell: {page: 0,list: []}
       },
-      currentType: 'pop'
+      currentType: 'pop',
+      isShowBackTop: false
     }
   },
   components: { 
@@ -47,7 +52,8 @@ export default {
     NavBar,
     Scroll,
     TabControl,
-    GoodList
+    GoodList,
+    BackTop
   },
   created() {
     //1.轮播图数据
@@ -61,7 +67,7 @@ export default {
   computed: {
     showGoods() {
       return this.goods[this.currentType].list
-    }
+    },
   },
   methods: {
     /*
@@ -80,7 +86,12 @@ export default {
           break;
       }
     },
-
+    backClick() {
+      this.$refs.scroll.scrollTo(0,0)
+    },
+    contentScroll(position) {
+      this.isShowBackTop = (- position.y) > 800
+    },
 
     /*
      * 网络请求相关的方法 
