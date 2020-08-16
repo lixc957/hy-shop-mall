@@ -32,6 +32,7 @@ import GoodList from 'content/goods/GoodsList'
 import BackTop from 'content/BackTop'
 
 import {getHomeMultidata,getHomeGoods} from 'network/home'
+import {debounce} from '@/common/utils'
 
 export default {
   data() {
@@ -69,7 +70,7 @@ export default {
   },
   mounted() {
     //1.监听图片数据加载完成
-    const refresh = this.debounce(this.$refs.scroll.refresh,300)
+    const refresh = debounce(this.$refs.scroll.refresh,200)
     this.$bus.$on('imgLoad',() => {
       refresh()
     })
@@ -83,16 +84,6 @@ export default {
     /*
      * 事件监听相关的方法 
      */
-    //封装防抖函数
-    debounce(fn,delay) {
-      let timer = null
-      return function(...rest) {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          fn.apply(this,rest)
-        },delay)
-      }
-    },
     tabClick(index) {
       switch(index) {
         case 0 : 
