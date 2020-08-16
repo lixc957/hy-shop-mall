@@ -65,6 +65,14 @@ export default {
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
+
+  },
+  mounted() {
+    //1.监听图片数据加载完成
+    const refresh = this.debounce(this.$refs.scroll.refresh,300)
+    this.$bus.$on('imgLoad',() => {
+      refresh()
+    })
   },
   computed: {
     showGoods() {
@@ -75,6 +83,16 @@ export default {
     /*
      * 事件监听相关的方法 
      */
+    //封装防抖函数
+    debounce(fn,delay) {
+      let timer = null
+      return function(...rest) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn.apply(this,rest)
+        },delay)
+      }
+    },
     tabClick(index) {
       switch(index) {
         case 0 : 
@@ -114,7 +132,6 @@ export default {
         this.goods[type].page += 1
 
         this.$refs.scroll.finishPullUp() 
-        this.$refs.scroll.refresh()
       })
     }
   },

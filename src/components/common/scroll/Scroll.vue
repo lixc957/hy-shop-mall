@@ -46,15 +46,15 @@ export default {
   },
   methods: {
     scrollTo(x,y,time = 300) {
-      this.scroll.scrollTo(x,y,time)
+      this.scroll && this.scroll.scrollTo(x,y,time)
     },
     //上拉数据加载完毕，调用此方法告诉 better-scroll 数据加载完成
     finishPullUp() {
-      this.scroll.finishPullUp()
+      this.scroll && this.scroll.finishPullUp()
     },
     //重新计算 better-scroll
     refresh() {
-      this.scroll.refresh()
+      this.scroll && this.scroll.refresh()
     }
   },
 }
