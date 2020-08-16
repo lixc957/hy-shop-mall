@@ -1,37 +1,16 @@
 <template>
   <div id="home">
     <nav-bar class="nav-bar"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"/>
-    <recommend-view :recommends="recommends"/>
-    <feature-view/>
-    <tab-control
-      :titles="['流行','新款','精选']"
-      class="tab-control"
-      @tabClick="tabClick"/>
-    <good-list :goods="showGoods"/>
-
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-      <li>9</li>
-      <li>10</li>
-      <li>11</li>
-      <li>12</li>
-      <li>13</li>
-      <li>14</li>
-      <li>15</li>
-      <li>16</li>
-      <li>17</li>
-      <li>18</li>
-      <li>19</li>
-      <li>20</li>
-    </ul>
+    <scroll class="content">
+      <home-swiper :banners="banners"/>
+      <recommend-view :recommends="recommends"/>
+      <feature-view/>
+      <tab-control
+        :titles="['流行','新款','精选']"
+        class="tab-control"
+        @tabClick="tabClick"/>
+      <good-list :goods="showGoods"/>
+    </scroll>
   </div>
 </template>
 
@@ -42,6 +21,7 @@ import RecommendView from './childComps/RecommendView'
 import FeatureView from './childComps/FeatureView'
 
 import NavBar from 'common/navbar/NavBar'
+import Scroll from 'common/scroll/Scroll'
 import TabControl from 'content/TabControl'
 import GoodList from 'content/goods/GoodsList'
 
@@ -65,6 +45,7 @@ export default {
     RecommendView,
     FeatureView,
     NavBar,
+    Scroll,
     TabControl,
     GoodList
   },
@@ -122,8 +103,17 @@ export default {
 
 <style scoped>
   #home {
-    padding-top: 44px;
     background-color: #fff;
+    position: relative;
+    height: 100vh;
+  }
+
+  .content {
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
   }
 
   .nav-bar {
