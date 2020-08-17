@@ -59,6 +59,10 @@ export default {
     //重新计算 better-scroll
     refresh() {
       this.scroll && this.scroll.refresh()
+    },
+    //记录路由离开时的位置
+    getScrollY() {
+      return this.scroll ? this.scroll.y : 0
     }
   },
 }

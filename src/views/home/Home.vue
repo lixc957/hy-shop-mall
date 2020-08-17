@@ -1,18 +1,24 @@
 <template>
   <div id="home">
     <nav-bar class="nav-bar"><div slot="center">购物街</div></nav-bar>
+    <tab-control
+        :titles="['流行','新款','精选']"
+        @tabClick="tabClick"
+        ref="tabControl1"
+        v-show="isFixed"
+        class="tab-control"/>
     <scroll class="content" ref="scroll" 
       :probe-type="3"
       @scroll="contentScroll"
       :pull-up-load="true"
       @pullingUp="loadMore">
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners" @imgLoad="swiperImgLoad"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control
         :titles="['流行','新款','精选']"
-        class="tab-control"
-        @tabClick="tabClick"/>
+        @tabClick="tabClick"
+        ref="tabControl2"/>      
       <good-list :goods="showGoods"/>
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"/>
@@ -45,7 +51,10 @@ export default {
         sell: {page: 0,list: []}
       },
       currentType: 'pop',
-      isShowBackTop: false
+      isShowBackTop: false,
+      tabOffsetTop: 0,
+      isFixed: false,
+      saveY: 0
     }
   },
   components: { 
@@ -96,15 +105,25 @@ export default {
           this.currentType = 'sell'
           break;
       }
+
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
     },
     backClick() {
       this.$refs.scroll.scrollTo(0,0)
     },
     contentScroll(position) {
+      //1.判断 backTop 是否显示
       this.isShowBackTop = (- position.y) > 800
+
+      //2.判断 tabControl 是否吸顶
+      this.isFixed = (- position.y) > this.tabOffsetTop
     },
     loadMore() {
       this.getHomeGoods(this.currentType)
+    },
+    swiperImgLoad() {
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     },
 
     /*
@@ -126,6 +145,13 @@ export default {
       })
     }
   },
+  activated() {
+    this.$refs.scroll.refresh();
+    this.$refs.scroll.scrollTo(0,this.saveY,0)    
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY()
+  },
 }
 </script>
 
@@ -134,6 +160,11 @@ export default {
     background-color: #fff;
     position: relative;
     height: 100vh;
+  }
+
+  .tab-control {
+    position: relative;
+    z-index: 1;
   }
 
   .content {
@@ -145,20 +176,11 @@ export default {
   }
 
   .nav-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
+    position: relative;
     background-color: var(--color-tint);
     font-weight: 700;
     color: #fff;
     text-align: center;
-    z-index: 1;
-  }
-
-  .tab-control {
-    position: sticky;
-    top: 43px;
     z-index: 1;
   }
 </style>
