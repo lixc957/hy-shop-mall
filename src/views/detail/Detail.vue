@@ -7,6 +7,8 @@
 <script>
 import DetailNavBar from './childComps/DetailNavBar'
 
+import {getDetail} from 'network/detail'
+
 export default {
   data() {
     return {
@@ -15,6 +17,11 @@ export default {
   },
   created() {
     this.iid = this.$route.params.iid
+
+    //请求商品数据
+    getDetail(this.iid).then(res => {
+      console.log(res)
+    })
   },
   components: {
     DetailNavBar
