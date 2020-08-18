@@ -44,6 +44,7 @@ export default {
     display: flex;
     text-align: center;
     font-size: 14px;
+    line-height: 44px;
   }
 
   .title-item {
@@ -55,10 +56,7 @@ export default {
   }
 
   .back {
+    padding-top: 7px;
     text-align: center;
-  }
-
-  .back img {
-    margin-top: 10px;
   }
 </style>
