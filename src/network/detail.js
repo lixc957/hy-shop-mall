@@ -9,6 +9,7 @@ export function getDetail(iid) {
   })
 }
 
+//商品信息提取
 export class Goods {
   constructor(itemInfo, columns, services) {
     this.title = itemInfo.title;
@@ -19,5 +20,18 @@ export class Goods {
     this.columns = columns;
     this.services = services;
     this.nowPrice = itemInfo.highNowPrice;
+  }
+}
+
+
+//店铺信息提取
+export class Shop {
+  constructor(shopInfo) {
+    this.logo = shopInfo.shopLogo;
+    this.name = shopInfo.name;
+    this.fans = shopInfo.cFans;
+    this.sells = shopInfo.cSells;
+    this.score = shopInfo.score;
+    this.goodsCount = shopInfo.cGoods
   }
 }
