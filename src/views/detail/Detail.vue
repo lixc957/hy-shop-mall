@@ -14,8 +14,10 @@
       <detail-param-info ref="params" :param-info="paramInfo" />
       <detail-comment-info ref="comments" :comment-info="commentInfo" />
       <goods-list ref="recommends" :goods="recommends" />
+      <back-top @click.native="backClick" v-show="isShowBackTop" />
     </scroll>
     <detail-bottom-bar />
+    <back-top @click.native="backClick" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -33,7 +35,7 @@ import DetailBottomBar from './childComps/DetailBottomBar'
 import Scroll from 'common/scroll/Scroll'
 
 import { getDetail, Goods, Shop, ParamInfo, getRecommend } from 'network/detail'
-import { itemListenerMixin } from '@/common/mixin'
+import { itemListenerMixin, backTopMixin } from '@/common/mixin'
 import { debounce } from '@/common/utils'
 
 export default {
@@ -123,15 +125,6 @@ export default {
       this.$refs.scroll.scrollTo(0, - this.themeTopYs[index], 200)
     },
     contentScroll(position) {
-      // const scrollEffect = debounce(() => {
-      //   const positionY = - position.y
-      //   if (positionY < this.themeTopYs[1]) this.$refs.nav.currentIndex = 0
-      //   else if (positionY < this.themeTopYs[2]) this.$refs.nav.currentIndex = 1
-      //   else if (positionY < this.themeTopYs[3]) this.$refs.nav.currentIndex = 2
-      //   else this.$refs.nav.currentIndex = 3
-      //   console.log(positionY, this.themeTopYs)
-      // },300)
-      // scrollEffect()
       const positionY = - position.y
       let len = this.themeTopYs.length
       for (let i = 0; i < len - 1; i++) {
@@ -142,9 +135,11 @@ export default {
           this.$refs.nav.currentIndex = this.currentIndex
         }
       }
+
+      this.isShowBackTop = positionY > 800
     }
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   mounted() {
   },
   destroyed() {
