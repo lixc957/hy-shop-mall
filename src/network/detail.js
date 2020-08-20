@@ -44,3 +44,10 @@ export class ParamInfo {
     this.sizes = rule.tables;
   }
 }
+
+//请求推荐数据
+export function getRecommend() {
+  return axios({
+    url: '/recommend'
+  })
+}

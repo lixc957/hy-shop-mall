@@ -54,7 +54,8 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isFixed: false,
-      saveY: 0
+      saveY: 0,
+      itemImgListener: null
     }
   },
   components: { 
@@ -80,9 +81,10 @@ export default {
   mounted() {
     //1.监听图片数据加载完成
     const refresh = debounce(this.$refs.scroll.refresh,200)
-    this.$bus.$on('imgLoad',() => {
+    this.itemImgListener = () => {
       refresh()
-    })
+    }
+    this.$bus.$on('imgLoad',this.itemImgListener)
   },
   computed: {
     showGoods() {
@@ -150,7 +152,11 @@ export default {
     this.$refs.scroll.scrollTo(0,this.saveY,0)    
   },
   deactivated() {
+    //1.保存滚动的y值
     this.saveY = this.$refs.scroll.getScrollY()
+
+    //2.取消全局事件监听
+    this.$bus.$off('imgLoad',this.itemImgListener)
   },
 }
 </script>
