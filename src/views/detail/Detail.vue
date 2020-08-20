@@ -5,7 +5,7 @@
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
-      <detail-goods-info :detail-info="detailInfo" @imgLoad="imgLoad"/>
+      <detail-goods-info :detail-info="detailInfo" @imgLoad="goodsImgLoad"/>
       <detail-param-info :param-info="paramInfo"/>
       <detail-comment-info :comment-info="commentInfo"/>
       <goods-list :goods="recommends"/>
@@ -26,6 +26,7 @@ import GoodsList from 'content/goods/GoodsList'
 import Scroll from 'common/scroll/Scroll'
 
 import {getDetail,Goods,Shop,ParamInfo,getRecommend} from 'network/detail'
+import {debounce} from '@/common/utils'
 
 export default {
   name: 'Detail',
@@ -38,7 +39,8 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
-      recommends: []
+      recommends: [],
+      itemImgListener: null
     }
   },
   created() {
@@ -88,10 +90,21 @@ export default {
     Scroll
   },
   methods: {
-    imgLoad() {
+    goodsImgLoad() {
       this.$refs.scroll.refresh()
     }
-  }
+  },
+  mounted() {
+    //1.监听图片数据加载完成
+    const refresh = debounce(this.$refs.scroll.refresh,200)
+    this.itemImgListener = () => {
+      refresh()
+    }
+    this.$bus.$on('imgLoad',this.itemImgListener)
+  },
+  destroyed() {
+    this.$bus.$off('imgLoad',this.itemImgListener)
+  },
 }
 </script>
 
