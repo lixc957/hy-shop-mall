@@ -1,7 +1,12 @@
 <template>
   <div class="detail">
-    <detail-nav-bar class="detail-nav" @titleClick="titleClick" />
-    <scroll class="content" ref="scroll">
+    <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="nav" />
+    <scroll
+      class="content"
+      ref="scroll"
+      @scroll="contentScroll"
+      :probe-type="3"
+    >
       <detail-swiper :top-images="topImages" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
@@ -43,7 +48,8 @@ export default {
       recommends: [],
       themeTopYs: [],
       getThemeTopY: null,
-      commentsOffsetTop: null
+      commentsOffsetTop: null,
+      currentIndex: 0
     }
   },
   created() {
@@ -80,8 +86,8 @@ export default {
       this.recommends = res.data.list
     })
 
-    //4.给
-    this.getThemeTopY =  debounce(() => {
+    //4.给 themeTopYs 赋值
+    this.getThemeTopY = debounce(() => {
       this.themeTopYs = []
       //判断是否有评论
       this.comments = (this.$refs.comments.$el.offsetTop - 44) || (this.$refs.recommends.$el.offsetTop - 44)
@@ -89,7 +95,8 @@ export default {
       this.themeTopYs.push(this.$refs.params.$el.offsetTop - 44)
       this.themeTopYs.push(this.comments)
       this.themeTopYs.push(this.$refs.recommends.$el.offsetTop - 44)
-    },200)
+      this.themeTopYs.push(Number.MAX_VALUE)
+    }, 200)
   },
   components: {
     DetailNavBar,
@@ -111,6 +118,27 @@ export default {
     },
     titleClick(index) {
       this.$refs.scroll.scrollTo(0, - this.themeTopYs[index], 200)
+    },
+    contentScroll(position) {
+      // const scrollEffect = debounce(() => {
+      //   const positionY = - position.y
+      //   if (positionY < this.themeTopYs[1]) this.$refs.nav.currentIndex = 0
+      //   else if (positionY < this.themeTopYs[2]) this.$refs.nav.currentIndex = 1
+      //   else if (positionY < this.themeTopYs[3]) this.$refs.nav.currentIndex = 2
+      //   else this.$refs.nav.currentIndex = 3
+      //   console.log(positionY, this.themeTopYs)
+      // },300)
+      // scrollEffect()
+      const positionY = - position.y
+      let len = this.themeTopYs.length
+      for (let i = 0; i < len - 1; i++) {
+        if (this.currentIndex !== i &&
+          (positionY >= this.themeTopYs[i] &&
+            positionY < this.themeTopYs[i + 1])) {
+          this.currentIndex = i
+          this.$refs.nav.currentIndex = this.currentIndex
+        }
+      }
     }
   },
   mixins: [itemListenerMixin],
