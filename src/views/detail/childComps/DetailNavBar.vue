@@ -9,7 +9,7 @@
           :key="index" 
           class="title-item"
           :class="{active: index === currentIndex}"
-          @click="itemClick(index)">{{item}}</div>
+          @click="titleClick(index)">{{item}}</div>
       </div>
     </nav-bar>
   </div>
@@ -29,8 +29,10 @@ export default {
     NavBar
   },
   methods: {
-    itemClick(index) {
+    titleClick(index) {
       this.currentIndex = index;
+      //发射事件
+      this.$emit('titleClick',index)
     },
     backClick() {
       this.$router.back()

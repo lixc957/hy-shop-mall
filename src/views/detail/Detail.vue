@@ -1,15 +1,15 @@
 <template>
   <div class="detail">
-    <detail-nav-bar class="detail-nav"/>
-    <scroll class="content" ref="scroll">   
-      <detail-swiper :top-images="topImages"/>
-      <detail-base-info :goods="goods"/>
-      <detail-shop-info :shop="shop"/>
-      <detail-goods-info :detail-info="detailInfo" @imgLoad="goodsImgLoad"/>
-      <detail-param-info :param-info="paramInfo"/>
-      <detail-comment-info :comment-info="commentInfo"/>
-      <goods-list :goods="recommends"/>
-    </scroll>  
+    <detail-nav-bar class="detail-nav" @titleClick="titleClick" />
+    <scroll class="content" ref="scroll">
+      <detail-swiper :top-images="topImages" />
+      <detail-base-info :goods="goods" />
+      <detail-shop-info :shop="shop" />
+      <detail-goods-info :detail-info="detailInfo" @imgLoad="goodsImgLoad" />
+      <detail-param-info ref="params" :param-info="paramInfo" />
+      <detail-comment-info ref="comments" :comment-info="commentInfo" />
+      <goods-list ref="recommends" :goods="recommends" />
+    </scroll>
   </div>
 </template>
 
@@ -25,8 +25,9 @@ import GoodsList from 'content/goods/GoodsList'
 
 import Scroll from 'common/scroll/Scroll'
 
-import {getDetail,Goods,Shop,ParamInfo,getRecommend} from 'network/detail'
-import {itemListenerMixin} from '@/common/mixin'
+import { getDetail, Goods, Shop, ParamInfo, getRecommend } from 'network/detail'
+import { itemListenerMixin } from '@/common/mixin'
+import { debounce } from '@/common/utils'
 
 export default {
   name: 'Detail',
@@ -40,6 +41,9 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommends: [],
+      themeTopYs: [],
+      getThemeTopY: null,
+      commentsOffsetTop: null
     }
   },
   created() {
@@ -54,7 +58,7 @@ export default {
       this.topImages = data.itemInfo.topImages
 
       //2.获取商品信息
-      this.goods = new Goods(data.itemInfo,data.columns,data.shopInfo.services)
+      this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
 
       //3.获取店铺信息
       this.shop = new Shop(data.shopInfo)
@@ -63,7 +67,7 @@ export default {
       this.detailInfo = data.detailInfo
 
       //5.获取商品参数信息
-      this.paramInfo = new ParamInfo(data.itemParams.info,data.itemParams.rule)
+      this.paramInfo = new ParamInfo(data.itemParams.info, data.itemParams.rule)
 
       //6.获取评论信息
       if (data.rate.cRate !== 0) {
@@ -73,9 +77,19 @@ export default {
 
     //3.请求推荐数据
     getRecommend().then(res => {
-      console.log(res);
       this.recommends = res.data.list
     })
+
+    //4.给
+    this.getThemeTopY =  debounce(() => {
+      this.themeTopYs = []
+      //判断是否有评论
+      this.comments = (this.$refs.comments.$el.offsetTop - 44) || (this.$refs.recommends.$el.offsetTop - 44)
+      this.themeTopYs.push(0)
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop - 44)
+      this.themeTopYs.push(this.comments)
+      this.themeTopYs.push(this.$refs.recommends.$el.offsetTop - 44)
+    },200)
   },
   components: {
     DetailNavBar,
@@ -90,33 +104,39 @@ export default {
   },
   methods: {
     goodsImgLoad() {
+      //1.图片加载完重新计算高度
       this.$refs.scroll.refresh()
+      //2.
+      this.getThemeTopY()
+    },
+    titleClick(index) {
+      this.$refs.scroll.scrollTo(0, - this.themeTopYs[index], 200)
     }
   },
   mixins: [itemListenerMixin],
   mounted() {
   },
   destroyed() {
-    this.$bus.$off('imgLoad',this.itemImgListener)
+    this.$bus.$off('imgLoad', this.itemImgListener)
   },
 }
 </script>
 
 <style scoped>
-  .detail {
-    position: relative;
-    height: 100vh;
-    z-index: 2;
-    background-color: #fff;
-  }
+.detail {
+  position: relative;
+  height: 100vh;
+  z-index: 2;
+  background-color: #fff;
+}
 
-  .detail-nav {
-    position: relative;
-    z-index: 2;
-    background-color: #fff;
-  }
+.detail-nav {
+  position: relative;
+  z-index: 2;
+  background-color: #fff;
+}
 
-  .content {
-    height: calc(100% - 44px);
-  }
+.content {
+  height: calc(100% - 44px);
+}
 </style>
