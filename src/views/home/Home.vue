@@ -38,8 +38,8 @@ import GoodList from 'content/goods/GoodsList'
 import BackTop from 'content/BackTop'
 
 import {getHomeMultidata,getHomeGoods} from 'network/home'
-import {debounce} from '@/common/utils'
-
+import {itemListenerMixin} from '@/common/mixin'
+ 
 export default {
   data() {
     return {
@@ -55,7 +55,6 @@ export default {
       tabOffsetTop: 0,
       isFixed: false,
       saveY: 0,
-      itemImgListener: null
     }
   },
   components: { 
@@ -78,13 +77,8 @@ export default {
     this.getHomeGoods('sell')
 
   },
+  mixins: [itemListenerMixin],
   mounted() {
-    //1.监听图片数据加载完成
-    const refresh = debounce(this.$refs.scroll.refresh,200)
-    this.itemImgListener = () => {
-      refresh()
-    }
-    this.$bus.$on('imgLoad',this.itemImgListener)
   },
   computed: {
     showGoods() {

@@ -26,7 +26,7 @@ import GoodsList from 'content/goods/GoodsList'
 import Scroll from 'common/scroll/Scroll'
 
 import {getDetail,Goods,Shop,ParamInfo,getRecommend} from 'network/detail'
-import {debounce} from '@/common/utils'
+import {itemListenerMixin} from '@/common/mixin'
 
 export default {
   name: 'Detail',
@@ -40,7 +40,6 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommends: [],
-      itemImgListener: null
     }
   },
   created() {
@@ -94,13 +93,8 @@ export default {
       this.$refs.scroll.refresh()
     }
   },
+  mixins: [itemListenerMixin],
   mounted() {
-    //1.监听图片数据加载完成
-    const refresh = debounce(this.$refs.scroll.refresh,200)
-    this.itemImgListener = () => {
-      refresh()
-    }
-    this.$bus.$on('imgLoad',this.itemImgListener)
   },
   destroyed() {
     this.$bus.$off('imgLoad',this.itemImgListener)
