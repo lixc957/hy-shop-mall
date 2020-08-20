@@ -1,5 +1,6 @@
 <template>
   <div class="goods">
+    <slot name="header"></slot>
     <good-item v-for="(item, index) in goods" :key="index" :good-item="item"/>
   </div>
 </template>

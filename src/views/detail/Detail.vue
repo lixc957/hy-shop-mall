@@ -13,7 +13,9 @@
       <detail-goods-info :detail-info="detailInfo" @imgLoad="goodsImgLoad" />
       <detail-param-info ref="params" :param-info="paramInfo" />
       <detail-comment-info ref="comments" :comment-info="commentInfo" />
-      <goods-list ref="recommends" :goods="recommends" />
+      <goods-list ref="recommends" :goods="recommends">
+        <div class="recommend-header" slot="header">热门推荐</div>
+      </goods-list>
       <back-top @click.native="backClick" v-show="isShowBackTop" />
     </scroll>
     <detail-bottom-bar />
@@ -143,7 +145,7 @@ export default {
   mounted() {
   },
   destroyed() {
-    this.$bus.$off('imgLoad', this.itemImgListener)
+    this.$bus.$off('goodsItemImgLoad', this.itemImgListener)
   },
 }
 </script>
@@ -164,5 +166,13 @@ export default {
 
 .content {
   height: calc(100% - 44px - 49px);
+}
+
+.recommend-header {
+  width: 100%;
+  line-height: 40px;
+  padding-left: 8px;
+  font-size: 16px;
+  color: #333;
 }
 </style>

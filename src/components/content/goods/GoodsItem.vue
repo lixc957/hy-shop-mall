@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="showImage" alt="" @load="imgLoad">
+    <img :src="showImage" alt="" @load="goodsItemImgLoad">
     <div class="goods-info">
       <p>{{goodItem.title}}</p>
       <span class="price">{{goodItem.price | showPrice}}</span>
@@ -36,8 +36,8 @@ export default {
   },
   methods: {
     //图片数据加载完发射事件
-    imgLoad() {
-      this.$bus.$emit('imgLoad')
+    goodsItemImgLoad() {
+      this.$bus.$emit('goodsItemImgLoad')
     },
     itemClick() {
       this.$router.push('/detail/' + this.goodItem.iid)

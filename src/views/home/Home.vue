@@ -149,7 +149,7 @@ export default {
     this.saveY = this.$refs.scroll.getScrollY()
 
     //2.取消全局事件监听
-    this.$bus.$off('imgLoad', this.itemImgListener)
+    this.$bus.$off('goodsItemImgLoad', this.itemImgListener)
   },
 }
 </script>

@@ -13,7 +13,7 @@ export const itemListenerMixin = {
     this.itemImgListener = () => {
       refresh()
     }
-    this.$bus.$on('imgLoad',this.itemImgListener)
+    this.$bus.$on('goodsItemImgLoad',this.itemImgListener)
   },
 }
 
