@@ -40,7 +40,7 @@ export default {
       this.$bus.$emit('imgLoad')
     },
     itemClick() {
-      this.$router.push('/detail/' + this.goodItem.iid);
+      this.$router.push('/detail/' + this.goodItem.iid)
     }
   }
 }

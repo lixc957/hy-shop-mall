@@ -15,6 +15,7 @@
       <detail-comment-info ref="comments" :comment-info="commentInfo" />
       <goods-list ref="recommends" :goods="recommends" />
     </scroll>
+    <detail-bottom-bar />
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import DetailGoodsInfo from './childComps/DetailGoodsInfo'
 import DetailParamInfo from './childComps/DetailParamInfo'
 import DetailCommentInfo from './childComps/DetailCommentInfo'
 import GoodsList from 'content/goods/GoodsList'
+import DetailBottomBar from './childComps/DetailBottomBar'
 
 import Scroll from 'common/scroll/Scroll'
 
@@ -107,6 +109,7 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     GoodsList,
+    DetailBottomBar,
     Scroll
   },
   methods: {
@@ -165,6 +168,6 @@ export default {
 }
 
 .content {
-  height: calc(100% - 44px);
+  height: calc(100% - 44px - 49px);
 }
 </style>
