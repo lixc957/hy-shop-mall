@@ -18,7 +18,7 @@
       </goods-list>
       <back-top @click.native="backClick" v-show="isShowBackTop" />
     </scroll>
-    <detail-bottom-bar />
+    <detail-bottom-bar @addToCart="addToCart" />
     <back-top @click.native="backClick" v-show="isShowBackTop" />
   </div>
 </template>
@@ -139,6 +139,18 @@ export default {
       }
 
       this.isShowBackTop = positionY > 800
+    },
+    addToCart() {
+      // 1.创建对象
+      const product = {}
+      // 2.对象信息
+      product.iid = this.iid; // 商品id
+      product.imgURL = this.topImages[0]; // 图片地址
+      product.title = this.goods.title; // 商品说明
+      product.desc = this.goods.desc; // 新款
+      product.newPrice = this.goods.newPrice; // 最新价格
+      // 3.添加到Store中
+      this.$store.commit('addCart', product)
     }
   },
   mixins: [itemListenerMixin, backTopMixin],
