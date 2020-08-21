@@ -150,7 +150,7 @@ export default {
       product.desc = this.goods.desc; // 新款
       product.newPrice = this.goods.newPrice; // 最新价格
       // 3.添加到Store中
-      this.$store.commit('addCart', product)
+      this.$store.dispatch('addCart', product)
     }
   },
   mixins: [itemListenerMixin, backTopMixin],
