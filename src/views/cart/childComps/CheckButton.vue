@@ -2,7 +2,6 @@
   <div
     class="check-button"
     :class="{ 'checked': isChecked }"
-    @click="selectItem"
   >
     <img src="~/assets/img/cart/tick.svg" alt="" />
   </div>
@@ -14,19 +13,14 @@ export default {
   props: {
     isChecked: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
     return {
-      checked: this.value
+      
     }
   },
-  methods: {
-    selectItem: function () {
-      this.$emit('checkBtnClick')
-    }
-  }
 }
 </script>
 
@@ -36,6 +30,10 @@ export default {
   height: 18px;
   border-radius: 50%;
   border: 2px solid #aaa;
+}
+
+.check-button img {
+  width: 100%;
 }
 
 .checked {
