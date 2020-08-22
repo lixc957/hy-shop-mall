@@ -12,4 +12,8 @@ export default {
     payload.check = true
     state.cartList.push(payload);
   },
+  selectAllClick(state, payload) {
+    if (payload) state.cartList.forEach(item => item.check = false)
+    else state.cartList.forEach(item => item.check = true)
+  }
 }

@@ -1,7 +1,10 @@
 <template>
   <div class="bottom-menu">
-    <check-button class="select-all" />
-    <span>全选</span>
+    <check-button 
+      class="select-all" 
+      :class="{ 'checked': isSelectAll }"
+      @click.native="selectAllClick" />
+    <span @click="selectAllClick">全选</span>
     <span class="total-price">合计: ¥{{totalPrice}}</span>
     <span class="buy-product">去计算({{checkLength}})</span>
   </div>
@@ -33,8 +36,17 @@ export default {
       return this.cartList.filter(item => {
         return item.check
       }).length
+    },
+    isSelectAll() {
+      if (this.cartList.length === 0) return false
+      return this.cartList.every(item => item.check)
     }
-  }
+  },
+  methods: {
+    selectAllClick() {
+      this.$store.commit('selectAllClick',this.isSelectAll)
+    }
+  },
 }
 </script>
 
@@ -75,5 +87,10 @@ export default {
   text-align: center;
   line-height: 44px;
   float: right;
+}
+
+.checked {
+  background-color: #ff0000;
+  border-color: #ff0000;
 }
 </style>
