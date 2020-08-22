@@ -2,7 +2,7 @@
   <div class="detail">
     <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="nav" />
     <scroll
-      class="content"
+      class="detail-content"
       ref="scroll"
       @scroll="contentScroll"
       :probe-type="3"
@@ -176,7 +176,7 @@ export default {
   background-color: #fff;
 }
 
-.content {
+.detail-content {
   height: calc(100% - 44px - 49px);
 }
 

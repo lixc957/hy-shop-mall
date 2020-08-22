@@ -9,7 +9,7 @@
       class="tab-control"
     />
     <scroll
-      class="content"
+      class="home-content"
       ref="scroll"
       :probe-type="3"
       @scroll="contentScroll"
@@ -166,7 +166,7 @@ export default {
   z-index: 1;
 }
 
-.content {
+.home-content {
   position: absolute;
   top: 44px;
   bottom: 49px;
