@@ -1,10 +1,12 @@
 <template>
-  
+  <div class="cart-list-item">
+    {{ product }}
+  </div>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
 
     }
@@ -12,7 +14,7 @@ export default {
   props: {
     product: {
       type: Object,
-      default() {
+      default () {
         return {}
       }
     }
@@ -21,5 +23,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

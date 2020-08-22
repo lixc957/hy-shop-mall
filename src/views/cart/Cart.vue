@@ -3,7 +3,7 @@
     <nav-bar class="nav-bar">
       <div slot="center">购物车({{cartCount}})</div>
     </nav-bar>
-    <scroll class="cart-content">
+    <scroll class="cart-content" ref="scroll">
       <cart-list />
     </scroll>
   </div>
@@ -32,7 +32,10 @@ export default {
     ...mapGetters({
       cartCount: 'cartCount'
     })
-  }
+  },
+  activated() {
+    this.$refs.scroll.refresh()
+  },
 }
 </script>
 
