@@ -6,12 +6,14 @@
     <scroll class="cart-content" ref="scroll">
       <cart-list />
     </scroll>
+    <bottom-bar />
   </div>
 </template>
 
 <script>
 import NavBar from 'common/navbar/NavBar'
 import CartList from './childComps/CartList'
+import BottomBar from './childComps/BottomBar'
 
 import Scroll from 'common/scroll/Scroll'
 
@@ -26,6 +28,7 @@ export default {
   components: {
     NavBar,
     CartList,
+    BottomBar,
     Scroll,
   },
   computed: {
@@ -52,6 +55,6 @@ export default {
 }
 
 .cart-content {
-  height: calc(100% - 44px - 49px);
+  height: calc(100% - 44px - 49px - 40px);
 }
 </style>
