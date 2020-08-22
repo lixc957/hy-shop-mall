@@ -40,6 +40,8 @@ import { getDetail, Goods, Shop, ParamInfo, getRecommend } from 'network/detail'
 import { itemListenerMixin, backTopMixin } from '@/common/mixin'
 import { debounce } from '@/common/utils'
 
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Detail',
   data() {
@@ -117,6 +119,7 @@ export default {
     Scroll
   },
   methods: {
+    ...mapActions(['addCart']),
     goodsImgLoad() {
       //1.图片加载完重新计算高度
       this.$refs.scroll.refresh()
@@ -149,8 +152,15 @@ export default {
       product.title = this.goods.title; // 商品说明
       product.desc = this.goods.desc; // 新款
       product.newPrice = this.goods.nowPrice; // 最新价格
-      // 3.添加到Store中
-      this.$store.dispatch('addCart', product)
+      // 3.将商品添加到Store中
+      // this.$store
+      //   .dispatch('addCart', product)
+      //   .then(res => {
+      //     console.log(res)
+      //   })
+      this.addCart(product).then(res => {
+        console.log(res)
+      })
     }
   },
   mixins: [itemListenerMixin, backTopMixin],
