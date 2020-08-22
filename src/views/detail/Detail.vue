@@ -148,7 +148,7 @@ export default {
       product.imgURL = this.topImages[0]; // 图片地址
       product.title = this.goods.title; // 商品说明
       product.desc = this.goods.desc; // 新款
-      product.newPrice = this.goods.newPrice; // 最新价格
+      product.newPrice = this.goods.nowPrice; // 最新价格
       // 3.添加到Store中
       this.$store.dispatch('addCart', product)
     }

@@ -3,7 +3,7 @@
     <cart-list-item 
       v-for="(item, index) in cartList"
       :key="index"
-      :product="item" />
+      :item-info="item" />
   </div>
 </template>
 
