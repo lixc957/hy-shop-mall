@@ -1,11 +1,8 @@
 <template>
   <div class="cart-list-item">
-    <!-- <div class="item-selector">
-      <CheckButton
-        @checkBtnClick="checkedChange"
-        v-model="itemInfo.checked"
-      ></CheckButton>
-    </div> -->
+    <div class="item-selector">
+      <check-button />
+    </div>
     <div class="item-img">
       <img :src="itemInfo.imgURL" alt="商品图片" />
     </div>
@@ -21,6 +18,7 @@
 </template>
 
 <script>
+import CheckButton from './CheckButton'
 export default {
   data () {
     return {
@@ -34,6 +32,9 @@ export default {
         return {}
       }
     }
+  },
+  components: {
+    CheckButton
   }
 }
 </script>
@@ -47,12 +48,12 @@ export default {
     border-bottom: 1px solid #ccc;
   }
 
-  /* .item-selector {
+  .item-selector {
     width: 14%;
     display: flex;
     justify-content: center;
     align-items: center;
-  } */
+  }
 
   .item-title, .item-desc {
     overflow: hidden;
