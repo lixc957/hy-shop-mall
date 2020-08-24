@@ -159,7 +159,7 @@ export default {
       //     console.log(res)
       //   })
       this.addCart(product).then(res => {
-        console.log(res)
+        this.$toast.show(res)
       })
     }
   },
