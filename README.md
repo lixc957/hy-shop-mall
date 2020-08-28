@@ -1,4 +1,4 @@
-# hignmall
+# youpin
 
 ## Project setup
 ```
