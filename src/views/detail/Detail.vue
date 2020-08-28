@@ -44,7 +44,7 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'Detail',
-  data() {
+  data () {
     return {
       iid: null,
       topImages: [],
@@ -60,7 +60,7 @@ export default {
       currentIndex: 0
     }
   },
-  created() {
+  created () {
     //1.获取商品id
     this.iid = this.$route.params.iid
 
@@ -120,16 +120,16 @@ export default {
   },
   methods: {
     ...mapActions(['addCart']),
-    goodsImgLoad() {
+    goodsImgLoad () {
       //1.图片加载完重新计算高度
       this.$refs.scroll.refresh()
       //2.
       this.getThemeTopY()
     },
-    titleClick(index) {
+    titleClick (index) {
       this.$refs.scroll.scrollTo(0, - this.themeTopYs[index], 200)
     },
-    contentScroll(position) {
+    contentScroll (position) {
       const positionY = - position.y
       let len = this.themeTopYs.length
       for (let i = 0; i < len - 1; i++) {
@@ -143,7 +143,7 @@ export default {
 
       this.isShowBackTop = positionY > 800
     },
-    addToCart() {
+    async addToCart () {
       // 1.创建对象
       const product = {}
       // 2.对象信息
@@ -158,15 +158,23 @@ export default {
       //   .then(res => {
       //     console.log(res)
       //   })
-      this.addCart(product).then(res => {
+      /* this.addCart(product).then(res => {
         this.$toast.show(res)
-      })
+      }) */
+      if (product.iid &&
+        product.imgURL &&
+        product.title &&
+        product.desc && product.newPrice) {
+        const res = await this.addCart(product)
+        this.$toast.show(res)
+      }
+
     }
   },
   mixins: [itemListenerMixin, backTopMixin],
-  mounted() {
+  mounted () {
   },
-  destroyed() {
+  destroyed () {
     this.$bus.$off('goodsItemImgLoad', this.itemImgListener)
   },
 }
