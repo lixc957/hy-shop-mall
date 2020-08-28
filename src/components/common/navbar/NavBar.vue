@@ -21,6 +21,7 @@ export default {
     display: flex;
     height: 44px;
     line-height: 44px;
+    font-size: 18px;
   }
 
   .left,.right {
