@@ -1,4 +1,4 @@
-# youpin
+# hy-shop-mall
 
 ## Project setup
 ```
